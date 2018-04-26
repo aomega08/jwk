@@ -5,12 +5,13 @@ rvm:
   - jruby-9.1.9.0
   - 2.0.0-p648
   - 2.1.10
-  - 2.2.8
-  - 2.3.5
+  - 2.3.3
+  - 2.4.4
+  - 2.5.1
 
 matrix:
   include:
-    - rvm: 2.4.2
+    - rvm: 2.4.4
       env: CODECLIMATE_REPO_TOKEN=5d5a47900abd78d4b430435e4948a78c9b065c20e2f4be4ecb0a084413d75ca0
       after_script:
         - bundle exec codeclimate-test-reporter

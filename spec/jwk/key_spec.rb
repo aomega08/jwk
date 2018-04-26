@@ -5,6 +5,18 @@ describe JWK::Key do
     end
   end
 
+  describe '.from_hash' do
+    it 'raises for invalid kty' do
+      expect { JWK::Key.from_hash('kty' => 'my-key-type') }.to raise_error JWK::InvalidKey
+    end
+
+    it 'will handles keys being symbols' do
+      key = instance_double('ECKey.new')
+      expect(JWK::ECKey).to receive(:new).and_return(key)
+      expect(JWK::Key.from_hash(kty: 'EC')).to eq(key)
+    end
+  end
+
   describe '.from_openssl' do
     it 'creates an RSAKey for RSA keys' do
       key = OpenSSL::PKey::RSA.new(2048)
