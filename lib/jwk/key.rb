@@ -42,21 +42,17 @@ module JWK
       end
 
       def validate_kty!(kty)
-        unless VALID_KTY.include?(kty)
-          raise JWK::InvalidKey, "The provided JWK has an unknown \"kty\" value: #{kty}."
-        end
+        raise JWK::InvalidKey, "The provided JWK has an unknown \"kty\" value: #{kty}." unless VALID_KTY.include?(kty)
       end
 
       private
 
       def stringify_keys(h)
-        hash = {}
-        h.each do |key, value|
+        h.each_with_object({}) do |(key, value), hash|
           value = value.stringify_keys if value.is_a?(Hash)
           hash[key.to_s] = value
           hash
         end
-        hash
       end
     end
 

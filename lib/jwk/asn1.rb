@@ -26,13 +26,13 @@ module JWK
 
       def object_id_for_crv(crv)
         id = case crv
-        when 'P-256'
-          '1.2.840.10045.3.1.7'
-        when 'P-384'
-          '1.3.132.0.34'
-        when 'P-521'
-          '1.3.132.0.35'
-        end
+             when 'P-256'
+               '1.2.840.10045.3.1.7'
+             when 'P-384'
+               '1.3.132.0.34'
+             when 'P-521'
+               '1.3.132.0.35'
+             end
 
         object_id(id)
       end
