@@ -1,5 +1,10 @@
 module JWK
   class Key
+    EC_KTY = 'EC'.freeze
+    RSA_KTY = 'RSA'.freeze
+    OCT_KTY = 'oct'.freeze
+    VALID_KTY = [EC_KTY, RSA_KTY, OCT_KTY].freeze
+
     class << self
       def from_pem(pem)
         key = OpenSSL::PKey.read(pem)
@@ -19,6 +24,11 @@ module JWK
 
       def from_json(json)
         key = JSON.parse(json)
+        from_hash(key)
+      end
+
+      def from_hash(hash)
+        key = stringify_keys(hash)
         validate_kty!(key['kty'])
 
         case key['kty']
@@ -32,9 +42,21 @@ module JWK
       end
 
       def validate_kty!(kty)
-        unless %w[EC RSA oct].include?(kty)
+        unless VALID_KTY.include?(kty)
           raise JWK::InvalidKey, "The provided JWK has an unknown \"kty\" value: #{kty}."
         end
+      end
+
+      private
+
+      def stringify_keys(h)
+        hash = {}
+        h.each do |key, value|
+          value = value.stringify_keys if value.is_a?(Hash)
+          hash[key.to_s] = value
+          hash
+        end
+        hash
       end
     end
 
